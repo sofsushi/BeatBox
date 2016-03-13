@@ -5,7 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public class BeatBoxFragment extends BaseListFragment{
+public class BeatBoxFragment extends BaseListFragment {
 
     public static final int SPAN_COUNT = 3;
 
@@ -36,7 +36,12 @@ public class BeatBoxFragment extends BaseListFragment{
 
     @Override
     protected RecyclerView.Adapter getAdapter() {
-        return mBeatBoxAdapter = new BeatBoxAdapter();
+        return mBeatBoxAdapter = new BeatBoxAdapter(new ItemClickListener<Sound>() {
+            @Override
+            public void onItemClick(Sound item) {
+                mBeatBox.play(item);
+            }
+        });
     }
 
     @Override

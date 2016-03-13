@@ -1,13 +1,17 @@
 package com.silmood.beatbox;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
-public class BeatBoxAdapter extends SimpleItemAdapter<Sound, BeatBoxAdapter.SoundHolder>{
+public class BeatBoxAdapter extends SimpleItemAdapter<Sound, BeatBoxAdapter.SoundHolder> {
+
+    private ItemClickListener<Sound> mItemClickListener;
+
+    public BeatBoxAdapter(ItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
 
     @Override
     protected int getItemView() {
@@ -16,29 +20,27 @@ public class BeatBoxAdapter extends SimpleItemAdapter<Sound, BeatBoxAdapter.Soun
 
     @Override
     protected SoundHolder getViewHolder(View view) {
-        return new SoundHolder(view);
+        return new SoundHolder(view, mItemClickListener);
     }
 
     @Override
     public void onBindViewHolder(SoundHolder holder, int position) {
-        holder.bindSound(getItem(position));
+        holder.bindData(getItem(position));
     }
 
-
-    public static class SoundHolder extends RecyclerView.ViewHolder{
+    public static class SoundHolder extends ViewHolderClickable<Sound> {
         @Bind(R.id.button_sound)
         Button mButton;
 
-        private Sound mSound;
-
-        public SoundHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+        public SoundHolder(View itemView, ItemClickListener<Sound> itemClickListener) {
+            super(itemView, itemClickListener);
         }
 
-        public void bindSound(Sound sound) {
-            mSound = sound;
-            mButton.setText(sound.getName());
+        @Override
+        public void bindData(Sound data) {
+            super.bindData(data);
+
+            mButton.setText(data.getName());
         }
     }
 

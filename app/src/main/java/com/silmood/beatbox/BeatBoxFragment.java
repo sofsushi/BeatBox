@@ -24,7 +24,7 @@ public class BeatBoxFragment extends BaseListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
         mBeatBox = new BeatBox(getContext());
     }
 
@@ -32,6 +32,12 @@ public class BeatBoxFragment extends BaseListFragment {
     public void initView(View view, Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         mBeatBoxAdapter.addAll(mBeatBox.getSounds());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBeatBox.release();
     }
 
     @Override

@@ -18,12 +18,12 @@ public class BeatBox {
 
     private AssetManager mAssets;
     private List<Sound> mSounds;
-    private SoundPool soundPool;
+    private SoundPool mSoundPool;
 
     public BeatBox(Context context) {
         mAssets = context.getAssets();
         mSounds = new ArrayList<>();
-        soundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0);
+        mSoundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0);
         loadSounds();
     }
 
@@ -53,7 +53,7 @@ public class BeatBox {
 
     private void load(Sound sound) throws IOException {
         AssetFileDescriptor afd = mAssets.openFd(sound.getAssetPath());
-        int soundId = soundPool.load(afd, 1);
+        int soundId = mSoundPool.load(afd, 1);
         sound.setSoundId(soundId);
     }
 
@@ -62,7 +62,11 @@ public class BeatBox {
         if (soundId == null) {
             return;
         }
-        soundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
+        mSoundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
+    }
+
+    public void release() {
+        mSoundPool.release();
     }
 
     public List<Sound> getSounds() {
